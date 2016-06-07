@@ -139,9 +139,8 @@ void printHuman(struct stat *stats, long tot, char *curPath) {
 
    if (stats != NULL) 
       val = (float)stats->st_size;
-   else {
+   else 
       val = tot;
-   }
 
    if (val > 0 && val < ONE_K) {
       if (*curPath == '!')
@@ -230,7 +229,7 @@ int roundUp(int num) {
       -un:     Goes up n directories and then does what it needs to do
 */
 int main(int argc, char *argv[]) {
-   int all = 0, depth = 5, total = 0, human = 0, count = 1, visual = 0, look = 0, none = 0, up = 0;
+   int all = 0, depth = 5, total = 0, human = 0, count = 1, visual = 0, look = 0, none = 0, up = 0, tdepth = 0;
    long tot = 0;
    char *find = malloc(sizeof(char) * MAX_LEN), *temp = malloc(sizeof(char) * 10), *path = malloc(sizeof(char) * MAX_LEN);
    char *rtn = malloc(sizeof(char) * MAX_LEN);
@@ -244,6 +243,7 @@ int main(int argc, char *argv[]) {
                break;
             case 'd':
                depth = atoi(&argv[count][2]);
+               tdepth = depth;
                break;
             case 'h':
                human = 1;
@@ -279,6 +279,7 @@ int main(int argc, char *argv[]) {
 
    if (none || (!all && !look)) {
       displayFolders(directory, NULL, &tot, depth, human);
+      depth = tdepth;
    }
 
    if (all) {
@@ -298,8 +299,11 @@ int main(int argc, char *argv[]) {
       else {
          if (visual)
             system("tree");
-         if (!human)
+         if (!human) {
             displayAll(directory, NULL, &tot, 0, depth, human);
+            depth = tdepth;
+         }
+
       }
    }
 
@@ -320,6 +324,7 @@ int main(int argc, char *argv[]) {
       tot = 0;
       directory = opendir(".");
       displayAll(directory, NULL, &tot, 1, depth, human);
+      depth = tdepth;
       if (!human)
          printf("%ld\ttotal\n", tot);
       else
@@ -336,10 +341,22 @@ int main(int argc, char *argv[]) {
       directory = opendir(".");
       system("tree");
    }
-   if (!human)
+   if (!human) {
       printf("%ld\t%s\n", tot, ".");
-   if (human)
+   }
+   if (human) {
+      if (up) {
+         if (up && look) {
+            if (up > 2)
+               up = 2;
+         }
+         goUp(up, rtn);
+         directory = opendir(".");
+         depth = tdepth;
+         displayAll(directory, NULL, &tot, 1, depth, human);
+      }
       printHuman(NULL, tot, ".");
+   }
 
    return 0;
 }
