@@ -1,0 +1,14 @@
+Compile using the provided makefile 
+
+The available flags for this program are: 
+      -a:      Displays an entry for all files in the current directory
+      -dn:     Goes n directories deep during recursion
+      -c:      Displays a grand total
+      -h:      Displays the output in a human readable way using prefixes like Byte, KB, MB...
+      -f<%s>:  Tallies up only files that contain the substring s
+      -v:      Displays a visual tree of the current directory
+      -un:     Goes up n directories and then does what it needs to do
+      
+Some flags cannot be used together, such as -c and -u and -a and -f. 
+
+Enjoy!
