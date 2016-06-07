@@ -339,9 +339,10 @@ int main(int argc, char *argv[]) {
    if (up && visual) {
       goUp(up, rtn);
       directory = opendir(".");
+      printf("%ld\t%s\n", tot, ".");
       system("tree");
    }
-   if (!human) {
+   if (!human && !visual) {
       printf("%ld\t%s\n", tot, ".");
    }
    if (human) {
