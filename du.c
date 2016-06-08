@@ -277,7 +277,7 @@ int main(int argc, char *argv[]) {
       directory = opendir(".");
    }
 
-   if (none || (!all && !look)) {
+   if (none || (!all && !look && !visual)) {
       displayFolders(directory, NULL, &tot, depth, human);
       depth = tdepth;
    }
@@ -342,9 +342,13 @@ int main(int argc, char *argv[]) {
       printf("%ld\t%s\n", tot, ".");
       system("tree");
    }
+   else if (visual) 
+      printf("%ld\t%s\n", tot, ".");
+
    if (!human && !visual) {
       printf("%ld\t%s\n", tot, ".");
    }
+
    if (human) {
       if (up) {
          if (up && look) {
